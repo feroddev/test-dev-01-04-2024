@@ -2,7 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Energy Savings Result</title>
+    <script>
+        function filterResults() {
+            var typeFilter = document.getElementById('typeFilter').value;
+            var rangeFilter = document.getElementById('rangeFilter').value;
+
+            var rows = document.querySelectorAll('tr.data-row');
+
+            rows.forEach(function(row) {
+                var type = row.getAttribute('data-type');
+                var range = row.getAttribute('data-range');
+
+                if ((typeFilter === 'all' || type === typeFilter) && (rangeFilter === 'all' || range === rangeFilter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <!--
@@ -14,5 +33,49 @@ TODO: You must provide 2 selects to filter the rows based in:
  2) consumption range
  - You must create the filter functionality in the front-end using JS
 -->
+<h1>Energy Savings Result</h1>
+
+    <!-- Filtros -->
+    <label for="typeFilter">Tipo de Consumidor:</label>
+    <select id="typeFilter" onchange="filterResults()">
+        <option value="all">Todos</option>
+        <option value="Residencial">Residencial</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Industrial">Industrial</option>
+    </select>
+
+    <label for="rangeFilter">Intervalo de Consumo:</label>
+    <select id="rangeFilter" onchange="filterResults()">
+        <option value="all">Todos</option>
+        <option value="<10000">Menor que 10.000 kWh</option>
+        <option value="10000-20000">10.000 kWh - 20.000 kWh</option>
+        <option value=">20000">Maior que 20.000 kWh</option>
+    </select>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>Consumo</th>
+                <th>Tipo</th>
+                <th>Cobertura</th>
+                <th>Desconto</th>
+                <th>Economia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr class="data-row" data-type="{{ result.3 }}" data-range="{{ result.2 }}">
+                <td>{{ result.0 }}</td>
+                <td>{{ result.1 }}</td>
+                <td>{{ result.2 }}</td>
+                <td>{{ result.3 }}</td>
+                <td>{{ result.4 }}</td>
+                <td>{{ result.5 }}</td>
+                <td>{{ result.6 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
