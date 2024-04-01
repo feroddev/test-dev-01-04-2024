@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from calculator_python import calculator
+from calculator.models import Consumer
+from asgiref.sync import sync_to_async
+
 
 # TODO: Your list view should do the following tasks
 """
@@ -22,33 +25,39 @@ def view1(request):
         avg_consumption = round(sum(consumption_values) / 3, 2)
         distributor_tax = float(request.POST["distributor_tax"])
         tax_type = request.POST["tax_type"]
+        city = request.POST["city"]
+        state = request.POST["state"]
         (
             annual_savings,
             month_savings,
             applied_discount,
             coverage,
         ) = calculator(consumption_values, distributor_tax, tax_type)
-        result = (
-            name,
-            document,
-            avg_consumption,
-            tax_type,
-            coverage,
-            applied_discount,
-            annual_savings,
-            month_savings,
+
+        Consumer.objects.create(
+            name=name,
+            document=document,
+            city=city,
+            state=state,
+            consumption=avg_consumption,
+            consumer_type=tax_type,
+            cover_value=coverage,
+            distributor_tax=distributor_tax,
         )
 
-        # Aqui, estou passando todos os dados relevantes para o template list.html
+        get_all_consumers = Consumer.objects.all()
+
         return render(
             request,
             "calculator/list.html",
-            {"results": [result]},
+            {"consumers": get_all_consumers},
         )
     else:
         return render(request, "calculator/calculate.html", {})
 
 
-def view2():
-    # Create the second view here.
-    pass
+def view2(request):
+    # if request.method == "GET":
+    consumers = Consumer.objects.all()
+
+    return render(request, "calculator/list.html", {"consumers": consumers})
