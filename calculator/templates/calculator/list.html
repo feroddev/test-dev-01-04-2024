@@ -60,11 +60,13 @@ TODO: You must provide 2 selects to filter the rows based in:
                 <th>Tipo</th>
                 <th>Cobertura</th>
                 <th>Desconto</th>
-                <th>Economia</th>
+                <th>Economia Anual</th>
+                <th>Economia Mensal</th>
             </tr>
         </thead>
         <tbody>
             {% for result in results %}
+
             <tr class="data-row" data-type="{{ result.3 }}" data-range="{{ result.2 }}">
                 <td>{{ result.0 }}</td>
                 <td>{{ result.1 }}</td>
@@ -73,6 +75,7 @@ TODO: You must provide 2 selects to filter the rows based in:
                 <td>{{ result.4 }}</td>
                 <td>{{ result.5 }}</td>
                 <td>{{ result.6 }}</td>
+                <td>{{ result.7 }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from calculator_python import calculator
 
 # TODO: Your list view should do the following tasks
 """
@@ -10,19 +11,42 @@ from django.shortcuts import render
 
 
 def view1(request):
-    # Create the first view here.
-    pass
+    if request.method == "POST":
+        name = request.POST["name"]
+        document = request.POST["document"]
+        consumption_values = [
+            float(request.POST["consumption1"]),
+            float(request.POST["consumption2"]),
+            float(request.POST["consumption3"]),
+        ]
+        avg_consumption = round(sum(consumption_values) / 3, 2)
+        distributor_tax = float(request.POST["distributor_tax"])
+        tax_type = request.POST["tax_type"]
+        (
+            annual_savings,
+            month_savings,
+            applied_discount,
+            coverage,
+        ) = calculator(consumption_values, distributor_tax, tax_type)
+        result = (
+            name,
+            document,
+            avg_consumption,
+            tax_type,
+            coverage,
+            applied_discount,
+            annual_savings,
+            month_savings,
+        )
 
-
-# TODO: Your create view should do the following tasks
-"""Create a view to perform inclusion of consumers. The view should do:
--> Receive a POST request with the data to register
--> If the data is valid (validate document), create and save a new Consumer object associated with the right discount rule object
--> Redirect to the template that list all consumers
-
-Your view must be associated with an url and a template different from the first one. A link to
-this page must be provided in the main page.
-"""
+        # Aqui, estou passando todos os dados relevantes para o template list.html
+        return render(
+            request,
+            "calculator/list.html",
+            {"results": [result]},
+        )
+    else:
+        return render(request, "calculator/calculate.html", {})
 
 
 def view2():

@@ -10,6 +10,10 @@
     <h1>Energy Savings Calculator</h1>
     <form method="post">
         {% csrf_token %}
+        <label for="name">Nome:</label>
+        <input type="text" name="name" id="name"><br>
+        <label for="document">Documento:</label>
+        <input type="text" name="document" id="document"><br>
         <label for="consumption1">Consumption 1:</label>
         <input type="number" name="consumption1" id="consumption1"><br>
         <label for="consumption2">Consumption 2:</label>
@@ -17,7 +21,7 @@
         <label for="consumption3">Consumption 3:</label>
         <input type="number" name="consumption3" id="consumption3"><br>
         <label for="distributor_tax">Distributor Tax:</label>
-        <input type="number" name="distributor_tax" id="distributor_tax" step="0.00000001"><br>
+        <input type="number" name="distributor_tax" id="distributor_tax" step="0.00000001" ><br>
         <label for="tax_type">Tax Type:</label>
         <select name="tax_type" id="tax_type">
             <option value="Residencial">Residencial</option>
